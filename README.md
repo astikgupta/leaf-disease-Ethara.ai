@@ -1,16 +1,54 @@
 # AI Plant Disease Diagnostics System 🌿
 
-This project is an end-to-end AI plant disease diagnostics system. It uses **Streamlit** for a modern frontend and **FastAPI** coupled with **PyTorch (MobileNetV2)** and **OpenCV** for backend processing. 
+An intelligent, computer vision-based web application designed to help farmers and agriculture enthusiasts diagnose plant diseases quickly and accurately. Built to be user-friendly, responsive, and robust without requiring any technical knowledge or user registration.
 
-## Features
-- **Dashboard & UI**: Built with Streamlit for a responsive, modern user experience.
-- **Image Input**: Upload images or capture directly via webcam.
-- **Disease Classification**: PyTorch-based inference pipeline using a MobileNetV2 architecture (pre-configured for the PlantVillage dataset).
-- **Disease Segmentation & Severity**: OpenCV HSV-based segmentation highlights diseased regions dynamically and computes disease severity metrics (Mild, Moderate, Severe).
-- **Treatment Recommendation Engine**: A rule-based engine providing actionable pesticide and prevention recommendations.
-- **History Tracking**: Tracks prior diagnostic results in the session state.
+## 📌 Project Overview
+This project leverages **Deep Learning** and **Computer Vision** to analyze photos of plant leaves. The system can:
+- **Diagnose** the disease affecting the plant.
+- **Determine Severity** (Mild, Moderate, or Severe) using advanced image segmentation.
+- **Provide Recommendations** for treating the plant (pesticide/fungicide names, dosage, and prevention tips).
 
-## Project Structure
+It is built with **Streamlit** for the frontend, ensuring accessibility on both mobile and desktop devices, and **FastAPI** coupled with **PyTorch** and **OpenCV** on the backend.
+
+## 🚀 Key Features
+
+### 💻 Farmer-Friendly UI (Streamlit)
+- **Accessible & Responsive**: Modern interface optimized for both mobile and desktop.
+- **No Registration Required**: Instantly usable without account creation.
+- **Input Options**: Upload an image or capture directly via webcam.
+- **Dashboard Features**:
+  - Image upload & Camera capture
+  - Segmentation visualization (showing diseased vs. healthy areas)
+  - Severity analysis & Disease information
+  - Treatment recommendations
+  - Disease history tracking (current session only)
+
+### ⚙️ Backend (FastAPI)
+- **High Performance**: Fast and lightweight, capable of handling multiple requests seamlessly.
+- **JSON Output**: Returns clean, formatted JSON predictions.
+- **Error Handling & Logging**: Robust exception handling for invalid images and complete logging of prediction history.
+
+### 🧠 AI & Computer Vision Pipeline
+- **Disease Classification**: Uses **MobileNetV2** (fine-tuned via transfer learning on the PlantVillage dataset) for lightweight, high-accuracy inference.
+- **Confidence Scoring**: Outputs the model's confidence in its diagnosis.
+- **Image Segmentation (OpenCV)**: Utilizes HSV color-space segmentation to isolate healthy vs. diseased pixels, with morphological operations for noise elimination.
+- **Severity Measurement**:
+  - Automatically calculates severity percentage: `(Diseased Pixels / Total Leaf Pixels) × 100`
+  - Classifies into: **Mild** (0–25%), **Moderate** (25–60%), **Severe** (>60%).
+  - Displayed visually using progress bars and color indicators.
+
+### 💊 Treatment Recommendation Engine
+- **Rule-based Recommendations**: Maps the predicted disease and severity to actionable treatments.
+- **Actionable Advice**: Provides the exact pesticide/fungicide name, dosage guidelines, application frequency, and preventive measures.
+
+## 🛠️ Technology Stack
+- **Frontend**: Streamlit
+- **Backend**: Python, FastAPI
+- **AI/ML**: PyTorch, Torchvision, MobileNetV2 (PlantVillage dataset)
+- **Computer Vision**: OpenCV, Pillow, NumPy
+- **Data Handling**: Pandas
+
+## 📁 Project Structure
 ```text
 leaf-disease/
 │
@@ -28,26 +66,30 @@ leaf-disease/
     └── requirements.txt       
 ```
 
-## Setup & Installation
+## ⚙️ Setup & Installation
 
 ### 1. Backend (FastAPI)
-Open a terminal and install dependencies, then start the server:
+Open a terminal, install the required packages, and start the server:
 ```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
-*The backend API will start at `http://localhost:8000`*
+*The backend API will run at `http://localhost:8000`*
 
 ### 2. Frontend (Streamlit)
-Open a separate terminal, install dependencies, and run the Streamlit app:
+Open a separate terminal, install the required packages, and run the Streamlit app:
 ```bash
 cd frontend
 pip install -r requirements.txt
 streamlit run app.py
 ```
-*The Streamlit UI will open at `http://localhost:8501`*
+*The UI dashboard will open at `http://localhost:8501`*
 
-## Deep Learning Model Weights
-> **Note:** Due to size constraints, the `.pth` weights file for the MobileNetV2 model is not included by default. The system has a fallback "mock" mode allowing full end-to-end testing of the UI, API, segmentation, and recommendations.
-To use your trained weights, place your file at `model_weights/model.pth` and the system will automatically detect and load it.
+## 🧠 Model Training Configuration (Overview)
+- **Architecture**: Pre-trained MobileNetV2 (Transfer Learning).
+- **Dataset Split**: 80% Training / 20% Validation.
+- **Optimizer & Loss**: Adam optimizer, Cross-Entropy Loss.
+- **Preprocessing**: RGB conversion, image resizing (224x224), and optimization for CNN inference.
+
+> **Note:** Place your fine-tuned `.pth` weights file appropriately in the backend directory for the system to detect and load it for real-time predictions.
